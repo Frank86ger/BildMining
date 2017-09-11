@@ -21,7 +21,7 @@ class Article(object):
     def __init__(self, rss_entry):
         """ INIT """
         self.RSS_Entry = rss_entry # feedparser.FeedParserDict type
-        self.TheArticle = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None] # list of all the shit
+        self.TheArticle = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None] # list of all the entries
 
     def CleanString(self, mystring):
         """ Clean the String """

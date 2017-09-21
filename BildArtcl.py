@@ -3,10 +3,16 @@
 Created on Thu Sep  7 14:31:55 2017
 
 @author: Frank
+
+TODO: 
+    create Numpy-like docstrings
+    more comments
 """
 
 class Article(object):
     """ Article docstring """
+    
+    db_login = "dbname=Bild_Mine user=postgres password=mypassword"
     
     # Imports
     import re
@@ -21,7 +27,7 @@ class Article(object):
     def __init__(self, rss_entry):
         """ INIT """
         self.RSS_Entry = rss_entry # feedparser.FeedParserDict type
-        self.TheArticle = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None] # list of all the entries
+        self.TheArticle = [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None] # list of all the shit
 
     def CleanString(self, mystring):
         """ Clean the String """
@@ -44,7 +50,43 @@ class Article(object):
         return [keyw1[1:-2], keyw2[1:-2], keyw3[1:-2]]
 
     def GetArticle(self):
-        """ Docstring: Get the Article """
+        """ 
+        For given article, reads out the RSS-information and the information of the article source-code itself.
+        Saves it to instance variable `TheArticle[]`.
+
+        Instance variable: TheArticle[i]
+        ----------
+        TheArticle[0] : str
+                RSS Title
+        TheArticle[1] : str
+                RSS Summary
+        TheArticle[2] : datetime.datetime object
+                RSS Publication Date
+        TheArticle[3] : str
+                RSS Weekday of Publication
+        TheArticle[4] : str
+                RSS Link to Article (could be used as unique ID)
+        TheArticle[5] : list
+                RSS Tags of Article
+        TheArticle[6] : str
+                JSON Publication Type
+        TheArticle[7] : str
+                JSON Keywords (Tags of Article)
+        TheArticle[8] : str
+                JSON Author Type
+        TheArticle[9] : str
+                JSON Author Name
+        TheArticle[10] : str
+                JSON Publication Type
+        TheArticle[11] : str
+                JSON Publication Name
+        TheArticle[12] : list
+                Page Channels (The 3 Main Tags)
+        TheArticle[13] : str
+                Captions of all figures
+        TheArticle[14] : str
+                Text of Article
+        """
         
         #--rss article title
         rss_title = self.RSS_Entry['title']
@@ -132,9 +174,12 @@ class Article(object):
         
     
     def CreateTable(self, table_name):
-        """ 123 """
+        """
+        Create Table Docstring
         
-        conn = self.psycopg2.connect("dbname=Bild_Mine user=postgres password=pc")
+        """
+        
+        conn = self.psycopg2.connect(Article.db_login)
         cur = conn.cursor()
         
         cmd = """
@@ -164,7 +209,16 @@ class Article(object):
 
 
     def SaveArticle(self):
-        """ 123 """
+        """
+        Saves the content of the instance variable `TheArticle[]` to the PostgreSQL
+        database with login `db_login`.
+        
+        Table_name ...
+        if exists ...
+        create new ...
+        save article.
+        
+        """
         rss_date = self.RSS_Entry['published']
         month_dic = {'Jan' : 1, 'Feb' : 2, 'Mar' : 3, 'Apr' : 4, 'May' : 5, 'Jun' : 6, 'Jul' : 7, 'Aug' : 8, 'Sep' : 9, 'Oct' : 10, 'Nov' : 11, 'Dec' : 12}
         #table_name = 'bild_'+str(month_dic[rss_date[8:11]]).zfill(2)+"_"+rss_date[12:16]
@@ -172,7 +226,7 @@ class Article(object):
 
 
         ###---
-        conn = self.psycopg2.connect("dbname=Bild_Mine user=postgres password=pc")
+        conn = self.psycopg2.connect(Article.db_login)
         cur = conn.cursor()
         
         cmd = """SELECT EXISTS (
@@ -195,7 +249,7 @@ class Article(object):
 
 
         #-- INSERT VALUES INTO TABLE
-        conn = self.psycopg2.connect("dbname=Bild_Mine user=postgres password=pc")
+        conn = self.psycopg2.connect(Article.db_login)
         cur = conn.cursor()
         ####################
 
